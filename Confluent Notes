@@ -1,0 +1,47 @@
+#1 Add Clearbit Tag toward the head of the page, and turn on the "Reveal Data" option from https://app.clearbit.com/settings/configuration/tagsjs
+#2 Add Segment callback for identify
+
+You can get the user’s current anonymousId using either of the following calls:
+analytics.user().anonymousId();
+https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/identity/
+
+
+# Place this at the bottom of page
+
+<script>
+  function segmentIdentify(response) {
+    console.log(response && response.company);
+
+    analytics.identify(analytics.user().anonymousId(), {
+      clearbit_reveal_company_name: reveal.company.name,
+      *clearbit_reveal_company_legal_name: reveal.company.legalName,
+      clearbit_reveal_company_domain: reveal.domain,
+      clearbit_reveal_company_tags: reveal.company.tags,
+      *clearbit_reveal_company_category_sector: reveal.company.category.sector,
+      *clearbit_reveal_company_category_industry_group: reveal.company.industry_group,
+      clearbit_reveal_company_category_industry: reveal.company.industry,
+      clearbit_reveal_company_category_sub_industry: reveal.company.subIndustry,
+      clearbit_reveal_company_geo_city: reveal.company.geo.city,
+      *clearbit_reveal_company_geo_state: reveal.company.geo.state,
+      clearbit_reveal_company_geo_country: reveal.company.geo.country,
+      clearbit_reveal_company_geo_country_code: reveal.company.geo.countryCode,
+      clearbit_reveal_company_metrics_employees_range: reveal.company.metrics.employeesRange,
+      clearbit_reveal_company_metrics_annual_revenue: reveal.company.metrics.annualRevenue,
+      clearbit_reveal_company_metrics_estimated_annual_revenue: reveal.company.metrics.estimatedAnnualRevenue,
+      clearbit_reveal_type: reveal.type,
+      clearbit_reveal_company_tech_categories: reveal.company.techCategories,
+      clearbit_reveal_company_indexed_at: reveal.company.indexedAt,
+      clearbit_reveal_ip_geo_city: reveal.geoIP.city,
+      clearbit_reveal_ip_geo_state: reveal.geoIP.state,
+      clearbit_reveal_ip_geo_stateCode: reveal.geoIP.stateCode,
+      clearbit_reveal_ip_geo_country: reveal.geoIP.country,
+      clearbit_reveal_ip_geo_countryCode: reveal.geoIP.countryCode
+
+    });
+  }
+</script>
+
+<script src="https://reveal.clearbit.com/v1/companies/reveal?authorization=pk_3b8bb5ef85b03b3e0d9bd2165914fee4&callback=segmentIdentify"></script>
+
+
+#3 Setup Optimizely Experiment

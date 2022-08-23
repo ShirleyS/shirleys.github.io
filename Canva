@@ -1,0 +1,13 @@
+from requests.auth import HTTPBasicAuth
+
+enrichment_url = "https://person.clearbit.com/v1/people/search?"
+# Add your own api key - see: https://dashboard.clearbit.com/api
+clearbit_api_key = "sk_YOURSECRETKEY"
+
+enrichment_url += 'email=' + input['email']
+
+response = requests.get(enrichment_url, auth=HTTPBasicAuth(clearbit_api_key,''))
+response.raise_for_status()
+person = response.json()
+
+return person
